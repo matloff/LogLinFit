@@ -33,3 +33,11 @@ The purpose of this package, then, is to choose a set of interactions
 between categorical variables, for use as inputs for regression models,
 using selection methods other than significance testing.
 
+Many non-testing methods will require access to standard errors of the
+estimated log-linear coefficients.  Fortunately, this is easy, by
+employing the "Poisson trick":  Instead of assuming that the cell counts
+follow a multinomial distribution, one assumes that they are independent
+and Poisson-distributed.  This allows the problem to approached using
+Poisson regression in **glm()**.
+
+

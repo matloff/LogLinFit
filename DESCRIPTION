@@ -1,0 +1,15 @@
+Package: LogLinPois
+Title: Non-Significance Testing Approaches to the Log-Linear Model
+Version: 0.1.0
+Authors@R: c(
+   person("Tzu-Ping", "Liu", email='tpliu@ucdavis.edu', role='aut'),
+   person("Norm", "Matloff", email = "matloff@cs.ucdavis.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9179-6785")),
+   person("Chris", "Hare", email='cdhare@ucdavis.edu', role='aut'))
+Maintainer: Norm Matloff <matloff@cs.ucdavis.edu>
+Description: Log linear model via the "Poisson Trick". Non-testing approach to model selection/dimension reduction.
+Encoding: UTF-8
+LazyData: true
+Depends: 
+URL: https://github.com/matloff/LogLinPois
+BugReports: https://github.com/matloff/LogLinPois/issues
+Imports: stats, utils
