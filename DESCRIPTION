@@ -1,5 +1,5 @@
 Package: LogLinPois
-Title: Non-Significance Testing Approaches to the Log-Linear Model
+Title: Non-Significance Testing Approaches to Log-Linear Model Selection
 Version: 0.1.0
 Authors@R: c(
    person("Tzu-Ping", "Liu", email='tpliu@ucdavis.edu', role='aut'),
