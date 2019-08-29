@@ -4,7 +4,7 @@ Version: 0.1.0
 Authors@R: c(
    person("Tzu-Ping", "Liu", email='tpliu@ucdavis.edu', role='aut'),
    person("Norm", "Matloff", email = "matloff@cs.ucdavis.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9179-6785")),
-   person("Chris", "Hare", email='cdhare@ucdavis.edu', role='aut'))
+   person("Chris", "Hare", email='cdhare@ucdavis.edu', role='ctb'))
 Maintainer: Norm Matloff <matloff@cs.ucdavis.edu>
 Description: Log linear model via the "Poisson Trick". Non-testing approach to model selection/dimension reduction.
 Encoding: UTF-8
