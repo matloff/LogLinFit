@@ -15,7 +15,7 @@ new_data <- function(data)
 
 ## Newdata = original data + count of each combination
 ########### newdata <- new_data(newd)
-newdata <- new_data(ucbdf)
+## newdata <- new_data(ucbdf)
 
 ################ cat_pred_auto() ################
 
