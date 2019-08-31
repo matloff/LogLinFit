@@ -1,5 +1,5 @@
 
-# LogLinPois
+# LogLinFit
 
 Log linear model via the "Poisson Trick". Non-testing 
 approach to model selection/dimension reduction.
