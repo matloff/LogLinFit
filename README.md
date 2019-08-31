@@ -1,8 +1,12 @@
 
 # LogLinFit
 
-Log linear model via the "Poisson Trick". Non-testing 
-approach to model selection/dimension reduction.
+Log linear model via the "Poisson Trick". Non-testing approach to model
+selection/dimension reduction.  Package goal:  Given a set of
+categorical variables that we wish to use in predicting/classifying
+another variable Y, determine a parsimonious model for the interactions
+among these variables, for use as X in predicting Y.  (There may also be
+continuous predictors.)
 
 ## Overview
 
