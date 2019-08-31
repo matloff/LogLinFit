@@ -22,14 +22,20 @@ new_data <- function(data)
 # arguments
 
 #   data: either an R table or a data frame; in latter case, last column is
-#      frequencies
+#      frequencies, required name 'Freq' -- will be generated if missing
 #   degree: maximum interaction degree, e.g. 2 for interactions 
 #      between pairs of variables
 
 cat_pred_auto <- function(data, degree)
 {
    if(class(data) == "table") dFrame <- as.data.frame(data)	
-   else dFrame <- data	
+   else {
+      if (names(data)[ncol(data)] != 'Freq') {
+         tmp <- table(data)
+         data <- as.data.frame(tmp)
+      }
+      dFrame <- data	
+   }
       
    ncol <- ncol(dFrame) - 1  
    if(degree > ncol)

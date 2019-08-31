@@ -1,30 +1,17 @@
 
 # LogLinFit
 
+(Under construction.)
+
 Log linear model via the "Poisson Trick". Non-testing approach to model
-selection/dimension reduction.  Package goal:  Given a set of
-categorical variables that we wish to use in predicting/classifying
-another variable Y, determine a parsimonious model for the interactions
-among these variables, for use as X in predicting Y.  (There may also be
-continuous predictors.)
+selection/dimension reduction.  
 
-## Overview
+## Package goal
 
-R has several functions/packages for building log-linear models.
-However, they are all significance-testing oriented.  There has long
-been concern among statisticians regarding testing, and the recent ASA
-position paper advises great caution in using such methodology.
-
-Yet for instance the function **stat::loglin()** only outputs point
-estimates (and even then, only on request), not standard errors.
-
-Our goal here is to have a procedure for using categorical variables as
-"X" variables in parametric regression modeling of some "Y".  Consider
-for instance a study of student duration in PhD programs.  Continuous
-variables might be age of entry to the program and undergraduate GPA.
-Categorical variables might be graduate field of study, undergraduate
-field of study, gender and a variable indicating whether the student had
-undergraduate research experience.
+> Given a set of categorical variables that we wish to use in
+> predicting/classifying another variable Y, determine a parsimonious
+> model for the interactions among these variables, for use as X in
+> predicting Y.  (There may also be continuous predictors.)
 
 Clearly there are many possible interactions among those categorical
 variables (also between the categorical and continuous variables, but we
@@ -33,15 +20,116 @@ should be included as Xs in our regressing Y against the Xs?  Including
 too many interactions might be unwieldy and difficult to interpret,
 and cause overfitting.
 
-The purpose of this package, then, is to choose a set of interactions 
-between categorical variables, for use as inputs for regression models,
-using selection methods other than significance testing.
+Continuous variables might be age of entry to the program and
+undergraduate GPA.  Categorical variables might be graduate field of
+study, undergraduate field of study, gender and a variable indicating
+whether the student had undergraduate research experience.
 
-Many non-testing methods will require access to standard errors of the
-estimated log-linear coefficients.  Fortunately, this is easy, by
-employing the "Poisson trick":  Instead of assuming that the cell counts
-follow a multinomial distribution, one assumes that they are independent
-and Poisson-distributed.  This allows the problem to approached using
-Poisson regression in **glm()**.
+The purpose of this package, then, is to choose a set of interactions 
+between categorical variables, for use as inputs for predictive
+regression models, using selection methods other than significance testing.
+
+## Moving away from testing 
+
+R has several functions/packages for building log-linear models.
+However, most are significance-testing oriented.  There has long
+been concern among statisticians regarding testing, and the 
+[recent ASA position paper](https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XWoK5fxlA5k)
+advises great caution in using such methodology.
+
+In deriving model-selection procedures that don't use testing, we may
+need standard errors for the model coefficients.  Yet for instance the
+function **stat::loglin()** only outputs point estimates (and even then,
+only on request), not standard errors.  Fortunately, obtaining standard
+errors is easy, by employing the "Poisson trick":  Instead of assuming
+that the cell counts follow a multinomial distribution, it can be shown
+that the same likelihood equations follow from assuming that the counts
+are independent and Poisson-distributed.  This allows the problem to
+approached using Poisson regression in **glm()**.
+
+## First ad hoc method
+
+Thus one very informal method would be to simply fit a model with
+interaction terms up to a desired degree, then visually decide which
+interactions to keep and which to discard.
+
+### Example:  UCB admissions data
+
+Consider the **UCBAdmissions** dataset that is part of base-R.  Let's
+fit a model with interactions through degree 2.  (We don't have a Y
+variable here, just an example of fitting.)
+
+``` r
+> llout <- cat_pred_auto(UCBAdmissions,2)
+> llout
+                                  beta         se
+(Intercept)                 6.27149855 0.04270539
+AdmitRejected              -0.58205140 0.06899258
+GenderFemale               -1.99858834 0.10593464
+DeptB                      -0.40322049 0.06783513
+DeptC                      -1.57790295 0.08949297
+DeptD                      -1.35000497 0.08525926
+DeptE                      -2.44982025 0.11755415
+DeptF                      -3.13787148 0.16173901
+AdmitRejected:GenderFemale -0.09987009 0.08084645
+AdmitRejected:DeptB         0.04339793 0.10983889
+AdmitRejected:DeptC         1.26259802 0.10663286
+AdmitRejected:DeptD         1.29460647 0.10582340
+AdmitRejected:DeptE         1.73930574 0.12611347
+AdmitRejected:DeptF         3.30648006 0.16998179
+GenderFemale:DeptB         -1.07482038 0.22861267
+GenderFemale:DeptC          2.66513272 0.12609063
+GenderFemale:DeptD          1.95832432 0.12733676
+GenderFemale:DeptE          2.79518589 0.13925227
+GenderFemale:DeptF          2.00231916 0.13571315
+```
+
+The point estimate for **AdmitRejected:GenderFemale** is small, say
+relative to the intercept term, so we may wish to discard it.  **Note
+carefully:** Even if the standard error for this term were tiny, making
+the term "highly significant" in classical statistics, we *still* would
+probably not want to include it in our model, since the point estimate
+is so small.  This is a good example of why the testing approach is not
+generally advisable.
+
+We also can view the estimates in groups, based on primary factors:
+
+``` r
+> exploreBetas(llout)
+                                  beta         se
+(Intercept)                 6.27149855 0.04270539
+AdmitRejected              -0.58205140 0.06899258
+AdmitRejected:GenderFemale -0.09987009 0.08084645
+AdmitRejected:DeptB         0.04339793 0.10983889
+AdmitRejected:DeptC         1.26259802 0.10663286
+AdmitRejected:DeptD         1.29460647 0.10582340
+AdmitRejected:DeptE         1.73930574 0.12611347
+AdmitRejected:DeptF         3.30648006 0.16998179
+hit Enter for next primary factor
+                                  beta         se
+(Intercept)                 6.27149855 0.04270539
+GenderFemale               -1.99858834 0.10593464
+AdmitRejected:GenderFemale -0.09987009 0.08084645
+GenderFemale:DeptB         -1.07482038 0.22861267
+GenderFemale:DeptC          2.66513272 0.12609063
+GenderFemale:DeptD          1.95832432 0.12733676
+GenderFemale:DeptE          2.79518589 0.13925227
+GenderFemale:DeptF          2.00231916 0.13571315
+hit Enter for next primary factor
+                           beta         se
+(Intercept)          6.27149855 0.04270539
+DeptB               -0.40322049 0.06783513
+AdmitRejected:DeptB  0.04339793 0.10983889
+GenderFemale:DeptB  -1.07482038 0.22861267
+...
+...
+...
+```
+
+With only three primary factors, this function is less useful here, but
+with more factors, or a higher-degree model, it can be a very useful
+tool.
+
+## Example:  prgeng data
 
 
