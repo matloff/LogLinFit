@@ -56,8 +56,7 @@ cat_pred_auto <- function(data, degree)
       est <- fitGLM(rh_formula,dFrame,var_y)
       betas <- est$coef
       se <- sqrt(diag(vcov(est)))
-      beta_var <- list("beta" = betas, "se" = se)
-      return(beta_var)
+      data.frame("beta" = betas, "se" = se)
    }
 }
 
@@ -65,6 +64,24 @@ fitGLM <- function(rh_formula,dFrame,var_y) {
       formula_string <- paste(var_y, rh_formula, sep = " ~ ")
       formula <- as.formula(formula_string)
       glm(formula, data=dFrame, family=poisson)
+}
+
+# explore the betas, one factor at a time; llFit is output of
+# cat_pred_auto()
+
+exploreBetas <- function(llFit) 
+{
+   # find primary factors
+   rn <- row.names(llFit)
+   coln <- grep(':',rn)
+   pfs <- rn[-coln]
+   pfs <- pfs[-1]  # don't consider the intercept a primary factor
+   
+   for (pf in pfs) {
+      rws <- grep(pf,rn)
+      print(llFit[c(1,rws),])
+      readline('hit Enter for next primary factor')
+   }
 }
 
 
