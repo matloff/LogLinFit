@@ -3,15 +3,27 @@
 
 (Under construction.)
 
-Log linear model via the "Poisson Trick". Non-testing approach to model
-selection/dimension reduction.  
+Formulation of parsimonious models for contingency tables.
 
 ## Package goal
 
-> Given a set of categorical variables that we wish to use in
-> predicting/classifying another variable Y, determine a parsimonious
-> model for the interactions among these variables, for use as X in
-> predicting Y.  (There may also be continuous predictors.)
+Note that the goal is NOT to fit the "best" model, in the sense of
+optimal estimates.  As the sample size goes to infinity, the optimal
+model will be the full model, with interactions through degree k for k
+factors.  
+
+Instead, our goal is a *parsimonious* model, i.e. we wish to capture
+most of the variation but retain simplicity.  This goal is motivated as
+follows:
+
+* Models with interactions of degree higher than 3 are difficult to
+  interpret, especially if the number of factors is large.
+
+* In many applications, the contingency table is not the end product.
+  Instead, the factors are used as predictor variables in regression or
+classification settings.  A parsimonious model helps avoid overfitting
+in the regression/classification settings.
+
 
 Clearly there are many possible interactions among those categorical
 variables (also between the categorical and continuous variables, but we
