@@ -1,23 +1,5 @@
-library(regtools)
 
-################ new_data() ################
-
-## inputs original dataframe
-
-## returns new dataframe
-
-new_data <- function(data)
-{
-   tbd <- table(data)
-   data_new <- as.data.frame(tbd)
-   return(data_new)
-}
-
-## Newdata = original data + count of each combination
-########### newdata <- new_data(newd)
-## newdata <- new_data(ucbdf)
-
-################ cat_pred_auto() ################
+############################### llfit() ################
 
 # arguments
 
@@ -26,7 +8,7 @@ new_data <- function(data)
 #   degree: maximum interaction degree, e.g. 2 for interactions 
 #      between pairs of variables
 
-cat_pred_auto <- function(data, degree)
+llFit <- function(data, degree)
 {
    if(class(data) == "table") dFrame <- as.data.frame(data)	
    else {
@@ -62,7 +44,8 @@ cat_pred_auto <- function(data, degree)
       est <- fitGLM(rh_formula,dFrame,var_y)
       betas <- est$coef
       se <- sqrt(diag(vcov(est)))
-      data.frame("beta" = betas, "se" = se)
+      betase <- data.frame("beta" = betas, "se" = se)
+      list(betase=betase, glmout=est)
    }
 }
 
@@ -75,21 +58,21 @@ fitGLM <- function(rh_formula,dFrame,var_y) {
 # explore the betas, one factor at a time; llFit is output of
 # cat_pred_auto()
 
-exploreBetas <- function(llFit) 
+exploreBetas <- function(llFitOut) 
 {
+   fit <- llFitOut$betase
    # find primary factors
-   rn <- row.names(llFit)
+   rn <- row.names(fit)
    coln <- grep(':',rn)
    pfs <- rn[-coln]
    pfs <- pfs[-1]  # don't consider the intercept a primary factor
    
    for (pf in pfs) {
       rws <- grep(pf,rn)
-      print(llFit[c(1,rws),])
+      print(fit[c(1,rws),])
       readline('hit Enter for next primary factor')
    }
 }
-
 
 
 ## Example 
@@ -98,34 +81,34 @@ exploreBetas <- function(llFit)
 ### test1 <- cat_pred_auto(ucb, 2, type="tb"); summary(test1)
 ### test2 <- cat_pred_auto(ucbdf, 2); test2
 
-################ cat_pred_self() ################
-
-## inputs new dataframe
-
-## inputs function of polynomial as string
-
-## input data type, default type="df"
-
-cat_pred_self <- function(data, rh_formula, type = "df")
-{
-   if(type == "tb")
-      {
-      df <- as.data.frame(data)	
-      }
-   else
-      {
-      df <- data	
-      }
-   ncol <- ncol(df)
-   var_y <- colnames(df)[ncol]
-   formula_string <- paste(var_y, rh_formula, sep = " ~ ")
-   formula <- as.formula(formula_string)
-   est <- glm(formula, data=df, family="poisson")
-   betas <- est$coef
-   variance <- diag(vcov(est))
-   beta_var <- list("beta" = betas, "var" = variance)
-   return(beta_var)
-}
+## ################ cat_pred_self() ################
+## 
+## ## inputs new dataframe
+## 
+## ## inputs function of polynomial as string
+## 
+## ## input data type, default type="df"
+## 
+## cat_pred_self <- function(data, rh_formula, type = "df")
+## {
+##    if(type == "tb")
+##       {
+##       df <- as.data.frame(data)	
+##       }
+##    else
+##       {
+##       df <- data	
+##       }
+##    ncol <- ncol(df)
+##    var_y <- colnames(df)[ncol]
+##    formula_string <- paste(var_y, rh_formula, sep = " ~ ")
+##    formula <- as.formula(formula_string)
+##    est <- glm(formula, data=df, family="poisson")
+##    betas <- est$coef
+##    variance <- diag(vcov(est))
+##    beta_var <- list("beta" = betas, "var" = variance)
+##    return(beta_var)
+## }
 
 ## Example code
 ### form <- "persfin + natecon + persfin*natecon"

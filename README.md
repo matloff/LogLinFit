@@ -86,7 +86,7 @@ Consider the **UCBAdmissions** dataset that is part of base-R.  Let's
 fit a model with interactions through degree 2, using our package here:  
 
 ``` r
-> llout <- cat_pred_auto(UCBAdmissions,2)
+> llout <- llFit(UCBAdmissions,2)
 > llout
                                   beta         se
 (Intercept)                 6.27149855 0.04270539
@@ -158,28 +158,15 @@ By the way, let's confirm that the Poisson trick works.  Here are the
 fitted mean cell counts:
 
 ``` r
-> setBreakpoint('simp_func.R',63)
-/Users/normanmatloff/Research/LogLinPois/R/simp_func.R#62:
- cat_pred_auto step  7,4,5 in <environment: R_GlobalEnv>
-> cat_pred_auto(UCBAdmissions,2)
-simp_func.R#63
-Called from: cat_pred_auto(UCBAdmissions, 2)
-Browse[2]> est$fitted.values
-         1          2          3          4          5          6
-7 
-529.269919 295.730081  71.730081  36.269919 353.639509 206.360491
-16.360491 
-         8          9         10         11         12         13
-14 
-  8.639509 109.245276 215.754724 212.754724 380.245276 137.207390
-279.792610 
-        15         16         17         18         19         20
-21 
-131.792610 243.207390  45.680810 145.319190 101.319190 291.680810
-22.957096 
+> llout$glmout$fitted.values
+         1          2          3          4          5          6          7 
+529.269919 295.730081  71.730081  36.269919 353.639509 206.360491  16.360491 
+         8          9         10         11         12         13         14 
+  8.639509 109.245276 215.754724 212.754724 380.245276 137.207390 279.792610 
+        15         16         17         18         19         20         21 
+131.792610 243.207390  45.680810 145.319190 101.319190 291.680810  22.957096 
         22         23         24 
 350.042904  23.042904 317.957096 
-
 > loglin(UCBAdmissions, list(c(1, 2), c(1, 3), c(2, 3)),fit=T)$fit
 9 iterations: deviation 0.04920393 
 , , Dept = A

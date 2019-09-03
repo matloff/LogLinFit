@@ -1,5 +1,5 @@
 Package: LogLinFit
-Title: Non-Significance Testing Approaches to Log-Linear Model Selection
+Title: Parsimonious Log-Linear Model Selection
 Version: 0.1.1
 Authors@R: c(
    person("Tzu-Ping", "Liu", email='tpliu@ucdavis.edu', role='aut'),
@@ -8,8 +8,8 @@ Authors@R: c(
 Maintainer: Norm Matloff <matloff@cs.ucdavis.edu>
 Description: Log linear model via the "Poisson Trick". Non-testing
 approach to model selection/dimension reduction for interactions
-among categorical variables. Motivated by use of the selected model as
-predictor variables in regression/classification problems.
+among categorical variables.  Emphasis is on parsimony rather than "best
+possible model."
 Encoding: UTF-8
 LazyData: true
 Depends: 
