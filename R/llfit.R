@@ -18,7 +18,9 @@ llFit <- function(data, degree)
       }
       dFrame <- data	
    }
-      
+   
+   if (nrow(dFrame) > sum(dFrame[,ncol(dFrame)]))
+      stop("number of categories in the table greater than number of rows in the original data")   
    ncol <- ncol(dFrame) - 1  
    if(degree > ncol)
       stop("degree greater than number of variables", call. = FALSE)
