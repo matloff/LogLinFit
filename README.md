@@ -32,14 +32,14 @@ settings, as well as reducing computation.
 
 The situation is similar to that of Principal Component Analysis, in
 both senses (1) and (2) above.  In fact, Principal Component regression
-analysis is a 
+analysis is a
 [common technique](http://www.win-vector.com/blog/2016/05/pcr_part1_xonly/).
 
-## Moving away from testing 
+## Moving away from testing
 
 R has a number of functions/packages for building log-linear models.
 However, most are significance-testing oriented.  There has long
-been concern among statisticians regarding testing, and the 
+been concern among statisticians regarding testing, and the
 [recent ASA position paper](https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XWoK5fxlA5k)
 advises great caution in using such methodology.
 
@@ -79,6 +79,13 @@ approached using Poisson regression in **glm()**.
 Thus one very informal method would be to simply fit a model with
 interaction terms up to a desired degree, then visually decide which
 interactions to keep and which to discard.
+
+## Caveat
+
+Before conducting *LogLinFit*, users are advised to check whether the number of
+the combination of levels of interested variables in the table is greater than
+the number of respondents/rows in the original data. *LogLinFit* returns errors
+under this situation.
 
 ### Example:  UCB admissions data
 
@@ -159,16 +166,16 @@ fitted mean cell counts:
 
 ``` r
 > llout$glmout$fitted.values
-         1          2          3          4          5          6          7 
-529.269919 295.730081  71.730081  36.269919 353.639509 206.360491  16.360491 
-         8          9         10         11         12         13         14 
-  8.639509 109.245276 215.754724 212.754724 380.245276 137.207390 279.792610 
-        15         16         17         18         19         20         21 
-131.792610 243.207390  45.680810 145.319190 101.319190 291.680810  22.957096 
-        22         23         24 
-350.042904  23.042904 317.957096 
+         1          2          3          4          5          6          7
+529.269919 295.730081  71.730081  36.269919 353.639509 206.360491  16.360491
+         8          9         10         11         12         13         14
+  8.639509 109.245276 215.754724 212.754724 380.245276 137.207390 279.792610
+        15         16         17         18         19         20         21
+131.792610 243.207390  45.680810 145.319190 101.319190 291.680810  22.957096
+        22         23         24
+350.042904  23.042904 317.957096
 > loglin(UCBAdmissions, list(c(1, 2), c(1, 3), c(2, 3)),fit=T)$fit
-9 iterations: deviation 0.04920393 
+9 iterations: deviation 0.04920393
 , , Dept = A
 
           Gender
@@ -187,5 +194,3 @@ Admit            Male     Female
 ```
 
 ## Example:  prgeng data
-
-
