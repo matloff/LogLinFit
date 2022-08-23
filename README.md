@@ -1,39 +1,42 @@
 
 # LogLinFit
 
-(Under construction.)
+WORK IN PROGRESS
 
-Formulation of parsimonious models for contingency tables.
+## Formulation of parsimonious models for contingency tables.
 
-## Package goal
+The familiar log-linear model from an unfamiliar point of view.
+
+## Package goals
 
 Let k denote the number of factors; i.e. we are working with a k-way
 table.  A log-linear analysis will produce main effects, 2-way
 interactions, 3-way interactions and so on, up through k-way.
 
-A key point is that our goal is NOT to fit the best-fitting model.  In
-applications, one seldom if ever has *exact* independence, conditional
-independence etc.  So, as the sample size n goes to infinity, the optimal
-model will usually be the full model, with interactions all the way
-through degree k.  
+Consider a 3-way table.  Remember, a log-linear model (LLM) models the
+means of the cell counts N<sub>ijk</sub> in the table.  More on this
+below, but for now we remark that a full k-way model here would give a
+"perfect" fit to the cell counts.  
 
-Instead, our goal is a *parsimonious* model, i.e. we wish to capture
-most of the variation but retain simplicity.  This goal is motivated as
-follows:
+We may not want that.  We may not want to fit the best-fitting model,
+electing instead for a parsimonious model.  Say k = 20. Are we really
+interested in, say, in 12-way interactions?  Probably not, and indeed
+R's built-in **loglin()** allows the user to limit the complexity of
+interactions in the model.
 
-1. Models with interactions of degree higher than 3 are difficult to
-  interpret, especially if the number of factors is large.
+However, after fitting our LLM, we still have the problem of
+interpretation; in viewing a particular term in the model, is it
+"large"?  We'll want to be able to form confidence intervals etc.
 
-2. In many applications, the contingency table is not the end product.
-   Instead, the factors are used as predictor variables (typically along
-with some continuous variables) in regression or classification
-settings.  A parsimonious model helps avoid overfitting in these
-settings, as well as reducing computation.
+In short our goals are:
 
-The situation is similar to that of Principal Component Analysis, in
-both senses (1) and (2) above.  In fact, Principal Component regression
-analysis is a 
-[common technique](http://www.win-vector.com/blog/2016/05/pcr_part1_xonly/).
+* To facilitate the fitting of a parsimonious model. 
+
+* To facilitate the user's ability to interpret the model.
+
+
+The situation regarding parsimony is quite similar to that of Principal
+Component Analysis. 
 
 ## Moving away from testing 
 
