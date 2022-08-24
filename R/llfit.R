@@ -3,20 +3,23 @@
 
 # arguments
 
-#   data: either an R table or a data frame; in latter case, last column is
-#      frequencies, required name 'Freq' -- will be generated if missing
+#   data: either an R table or a data frame; in the latter case, each
+#      column must be a factor
 #   degree: maximum interaction degree, e.g. 2 for interactions 
 #      between pairs of variables
 
-llFit <- function(data, degree)
+llFit <- function(dataIn, degree)
 {
-   if(class(data) == "table") dFrame <- as.data.frame(data)	
+
+   if(is.data.frame(dataIn)) dataIn <- table(dataIn)
+
+   if(class(dataIn) == "table") dFrame <- as.data.frame(dataIn)	
    else {
-      if (names(data)[ncol(data)] != 'Freq') {
-         tmp <- table(data)
-         data <- as.data.frame(tmp)
+      if (names(dataIn)[ncol(dataIn)] != 'Freq') {
+         tmp <- table(dataIn)
+         dataIn <- as.data.frame(tmp)
       }
-      dFrame <- data	
+      dFrame <- dataIn
    }
       
    ncol <- ncol(dFrame) - 1  
@@ -45,7 +48,10 @@ llFit <- function(data, degree)
       betas <- est$coef
       se <- sqrt(diag(vcov(est)))
       betase <- data.frame("beta" = betas, "se" = se)
-      list(betase=betase, glmout=est)
+      ary <- array(fitted(est),dim=dim(dataIn),dimnames=attr(dataIn,'dimnames'))
+      rslt <- list(betase=betase, glmout=est, ary=ary)
+      class(rslt) <- 'PoissonLogLin'
+      rslt
    }
 }
 
@@ -73,44 +79,4 @@ exploreBetas <- function(llFitOut)
       readline('hit Enter for next primary factor')
    }
 }
-
-
-## Example 
-### ucb <- UCBAdmissions
-### ucbdf <- as.data.frame(ucb)
-### test1 <- cat_pred_auto(ucb, 2, type="tb"); summary(test1)
-### test2 <- cat_pred_auto(ucbdf, 2); test2
-
-## ################ cat_pred_self() ################
-## 
-## ## inputs new dataframe
-## 
-## ## inputs function of polynomial as string
-## 
-## ## input data type, default type="df"
-## 
-## cat_pred_self <- function(data, rh_formula, type = "df")
-## {
-##    if(type == "tb")
-##       {
-##       df <- as.data.frame(data)	
-##       }
-##    else
-##       {
-##       df <- data	
-##       }
-##    ncol <- ncol(df)
-##    var_y <- colnames(df)[ncol]
-##    formula_string <- paste(var_y, rh_formula, sep = " ~ ")
-##    formula <- as.formula(formula_string)
-##    est <- glm(formula, data=df, family="poisson")
-##    betas <- est$coef
-##    variance <- diag(vcov(est))
-##    beta_var <- list("beta" = betas, "var" = variance)
-##    return(beta_var)
-## }
-
-## Example code
-### form <- "persfin + natecon + persfin*natecon"
-### result2 <- cat_pred_self(newdata, form)
 
