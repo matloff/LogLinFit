@@ -1,4 +1,12 @@
 
+
+# example; UCBAdmissions dataset, built-in to R
+
+# ucb <- UCBAdmissions
+# LLout <- llfit(ucb,2)
+# summary(LLout)
+
+
 ############################### llfit() ################
 
 # arguments
@@ -39,9 +47,9 @@ llFit <- function(dataIn, degree)
       for(i in 1:degree)
          {
          product <- combn(colnames(dFrame)[1:ncol], i,
-                    FUN = paste0, collapse = "*" ,  simplify = FALSE)
-         sum_pro <- paste(product, collapse = " + ")
-         formula_list[[i]] <- sum_pro
+               FUN = paste0, collapse = "*" ,  simplify = FALSE)
+            sum_pro <- paste(product, collapse = " + ")
+            formula_list[[i]] <- sum_pro
          }
       rh_formula <- paste(formula_list, collapse = " + ")
       est <- fitGLM(rh_formula,dFrame,var_y)
@@ -60,6 +68,12 @@ fitGLM <- function(rh_formula,dFrame,var_y) {
       formula <- as.formula(formula_string)
       glm(formula, data=dFrame, family=poisson)
 }
+
+# generics
+coef.PoissonLogLin <- function(x) coef(x$glmout)
+summary.PoissonLogLin <- function(x) summary(x$glmout)
+vcov.PoissonLogLin <- function(x) vcov(x$glmout)
+fitted.PoissonLogLin <- function(x) fitted(x$glmout)
 
 # explore the betas, one factor at a time; llFit is output of
 # cat_pred_auto()
