@@ -9,6 +9,14 @@ The familiar log-linear model from an unfamiliar point of view.
 
 ## Package goals
 
+In short our goals are:
+
+* To facilitate the fitting of a parsimonious model. 
+
+* To facilitate the user's ability to interpret the model.
+
+## Setting
+
 Let k denote the number of factors; i.e. we are working with a k-way
 table.  A log-linear analysis will produce main effects, 2-way
 interactions, 3-way interactions and so on, up through k-way.
@@ -18,45 +26,33 @@ means of the cell counts N<sub>ijk</sub> in the table.  More on this
 below, but for now we remark that a full k-way model here would give a
 "perfect" fit to the cell counts.  
 
-We may not want that.  We may not want to fit the best-fitting model,
-electing instead for a parsimonious model.  Say k = 20. Are we really
-interested in, say, in 12-way interactions?  Probably not, and indeed
-R's built-in **loglin()** allows the user to limit the complexity of
-interactions in the model.
+We may not want that.  First of all, if we don't have enough data, a
+full model may be overfitting. But second, we may not want to fit the
+best-fitting model, electing instead for a more parsimonious model.  Say
+k = 20. Are we really interested in, say, in 12-way interactions?
+Probably not, and indeed R's built-in **loglin()** LLM function allows
+the user to limit the complexity of interactions in the model.
+The situation regarding parsimony is quite similar to that of Principal
+Component Analysis, where we hope to represent our data with just a few
+components.. 
 
 However, after fitting our LLM, we still have the problem of
 interpretation; in viewing a particular term in the model, is it
-"large"?  We'll want to be able to form confidence intervals etc.
+"large"?  Ideally, we'd want to be able to form confidence intervals
+etc.
 
-In short our goals are:
+## Moving away from testing
 
-* To facilitate the fitting of a parsimonious model. 
-
-* To facilitate the user's ability to interpret the model.
-
-
-The situation regarding parsimony is quite similar to that of Principal
-Component Analysis. 
-
-## Moving away from testing 
-
-R has a number of functions/packages for building log-linear models.
-However, most are significance-testing oriented.  There has long
-been concern among statisticians regarding testing, and the 
-[recent ASA position paper](https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XWoK5fxlA5k)
-advises great caution in using such methodology.
-
-This point is especially important for our quest for parsimony here.  As
-n goes to infinity, all interactions will be "significant," rendering
-the analysis irrelevant to formulating a parsimonious model.
-Interaction terms will become "significant" even if they are small and
-inapproprriate for inclusion in a parsimonious model.
-
-A simlar problem arises with criteria such as Akaike's Information
-Criterion, 2c - 2l, where c is the number of cells in the table and l is
-the log likelihood.  As n goes to  infinity, l will go to 0, and thus
-the maximal AIC will come from maximizing c, i.e. using the full
-model.
+By the way, readers are encouraged to move away from p-values and
+significance tests.  There has long been concern among statisticians
+regarding testing, and the [recent ASA position
+paper](https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XWoK5fxlA5k)
+advises great caution in using such methodology.  This point is
+especially important for our quest for parsimony here.  As n goes to
+infinity, all interactions will be "significant," rendering the analysis
+irrelevant to formulating a parsimonious model.  Interaction terms will
+become "significant" even if they are small and inapproprriate for
+inclusion in a parsimonious model.
 
 Confidence intervals are quite useful in such contexts.  In the case of
 a significant-but-small interaction term, the interval may not *contain*
@@ -70,12 +66,69 @@ their standard errors.  Yet functions in base-R, for instance, do not
 provide these.  Indeed, **stat::loglin()** doesn't even output point
 estimates unless we request them.
 
-Though some specialized packages do compute standard errors, there is a
-simpler solution, employing the "Poisson trick":  Instead of assuming
+A simple solution employs the "Poisson trick":  Instead of assuming
 that the cell counts follow a multinomial distribution, it can be shown
 that the same likelihood equations follow from assuming that the counts
 are independent and Poisson-distributed.  This allows the problem to
 approached using Poisson regression in **glm()**.
+
+### Example:  UCB admissions data
+
+This is a famous built-in dataet in R, arising from a gender
+discrimination lawsuit against UC Berkeley. Female applicants to 
+graduate programs were admitted at lower rates than males were. One at
+least partial explanatory factor turned out to be that women wre
+applying to departments that had lower acceptance rates.
+
+Let's first fit an LLM using **loglin()**, allowing all 2-way
+interactions:
+
+``` r
+
+> ucb <- UCBAdmissions
+> llOut <- loglin(ucb,list(c(1,2),c(1,3),c(2,3)),fit=TRUE)
+9 iterations: deviation 0.04920393 
+> llOut$fit
+, , Dept = A
+
+          Gender
+Admit            Male     Female
+  Admitted 529.272408  71.727459
+  Rejected 295.727592  36.272541
+
+, , Dept = B
+
+          Gender
+Admit            Male     Female
+  Admitted 353.640139  16.359829
+  Rejected 206.359861   8.640171
+...
+...
+
+```
+
+And now instead call **llFit()**, which uses Poisson:
+
+``` r
+> llfOut$ary
+, , Dept = A
+
+          Gender
+Admit          Male   Female
+  Admitted 529.2699 71.73008
+  Rejected 295.7301 36.26992
+
+, , Dept = B
+
+          Gender
+Admit          Male    Female
+  Admitted 353.6395 16.360491
+  Rejected 206.3605  8.639509
+...
+...
+```
+
+Indeed, the Poisson version gives the same fitted cell means.
 
 ## First ad hoc method
 
