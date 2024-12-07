@@ -15,6 +15,13 @@ tbl <- matrix(c(31, 17, 109, 122), ncol=2, dimnames=list(Treatment=c("Placebo", 
 tbl
 ```
 
+```
+          Cold
+Treatment  Cold NoCold
+  Placebo    31    109
+  VitaminC   17    122
+```
+
 
 ## Setting
 
