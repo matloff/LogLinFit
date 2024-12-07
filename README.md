@@ -29,6 +29,10 @@ We then model log(&mu;<sub>ij</sub>) as a linear combination of unknown populati
 log(&mu;<sub>ij</sub>) = &mu; + &lambda;<sub>i</sub><sup>A</sup> + &lambda;<sub>j</sub><sup>B</sup> + 
 &lambda;<sub>ij</sub><sup>AB</sup>
 
+The situation in which all &lambda;<sub>ij</sub><sup>AB</sup> = 0 corresponds to the case of independent factors.
+
+With a 3-way table, terms are added of the form &lambda;<sub>ijk</sub><sup>ABC</sup>, and so on with higher-order tables.
+
 
 ## Setting
 
