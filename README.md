@@ -26,7 +26,8 @@ The question at hand is, are the treatment and illness statistically independent
 
 We then model log(&mu;<sub>ij</sub>) as a linear combination of unknown population parameters, as in regression problems. In the 2-way case as seen here, the model is
 
-log(&mu;<sub>ij</sub>) = &mu; + &lambda <sup>A</sup>
+log(&mu;<sub>ij</sub>) = &mu; + &lambda;<sub>i</sub><sup>A</sup> + &lambda;<sub>j</sub><sup>B</sup> + 
+&lambda;<sub>ij</sub><sup>AB</sup>
 
 
 ## Setting
