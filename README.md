@@ -22,7 +22,9 @@ Treatment  Cold NoCold
   VitaminC   17    122
 ```
 
-The question at hand is, are the treatment and illness statistically independent, or nearly so? Let N<sub>ij</sub>, the observed count in row i, column j of the table, so e.g. N<sub>12</sub> = 109. As usual, we assume the data come from a random sample of some population, with the mean count in row i, column j being denoted by &mu;<sub>ij</sub>.
+The question at hand is, are the treatment and illness statistically independent, or nearly so? Let N<sub>ij</sub>, the observed count in row i, column j of the table, so e.g. N<sub>12</sub> = 109. As usual, we assume the data come from a random sample of some population, with the mean count in row i, column j being denoted by &mu;<sub>ij</sub>. 
+
+We then model log(&mu;<sub>ij</sub>) as a linear combination of unknown population parameters, as in regression problems.
 
 
 ## Setting
