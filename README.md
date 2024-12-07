@@ -4,13 +4,17 @@
 
 The familiar log-linear model from a different point of view, with a goal of fitting parsimonious models.
 
-## Package goals
+## What is a log-linear (LL) model?
 
-In short our goals are:
+(This section may be skipped by those who have this background.)
 
-* To facilitate the fitting of a parsimonious model. 
+LL models n-way tables, such as this two-way seen in many Web sites:
 
-* To facilitate the user's ability to interpret the model.
+``` r
+tbl <- matrix(c(31, 17, 109, 122), ncol=2, dimnames=list(Treatment=c("Placebo", "VitaminC"), Cold=c("Cold", "NoCold")))
+tbl
+```
+
 
 ## Setting
 
