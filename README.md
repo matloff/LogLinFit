@@ -1,11 +1,8 @@
 
 # LogLinFit
 
-WORK IN PROGRESS
 
-## Formulation of parsimonious models for contingency tables.
-
-The familiar log-linear model from an unfamiliar point of view.
+The familiar log-linear model from a different point of view, with a goal of fitting parsimonious models.
 
 ## Package goals
 
