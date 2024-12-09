@@ -3,13 +3,14 @@ Title: Parsimonious Log-Linear Model Selection
 Version: 0.1.1
 Authors@R: c(
    person("Tzu-Ping", "Liu", email='tpliu@ucdavis.edu', role='aut'),
-   person("Norm", "Matloff", email = "matloff@cs.ucdavis.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9179-6785")),
-   person("Chris", "Hare", email='cdhare@ucdavis.edu', role='ctb'))
+   person("Norm", "Matloff", email = "matloff@cs.ucdavis.edu", 
+      role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9179-6785")),
+      person("Chris", "Hare", email='cdhare@ucdavis.edu', role='ctb'))
 Maintainer: Norm Matloff <matloff@cs.ucdavis.edu>
 Description: Log linear model via the "Poisson Trick". Non-testing
-approach to model selection/dimension reduction for interactions
-among categorical variables.  Emphasis is on parsimony rather than "best
-possible model."
+   approach to model selection/dimension reduction for interactions
+   among categorical variables.  Emphasis is on parsimony rather than "best
+   possible model."
 Encoding: UTF-8
 LazyData: true
 Depends: 
