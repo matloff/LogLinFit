@@ -69,6 +69,11 @@ fitGLM <- function(rh_formula,dFrame,var_y) {
       glm(formula, data=dFrame, family=poisson)
 }
 
+predict.PoissonLogLin <- function(obj,newdata) 
+{
+   predict(obj$glmout,newdata,type='response')
+}
+
 # generics
 coef.PoissonLogLin <- function(x) coef(x$glmout)
 summary.PoissonLogLin <- function(x) summary(x$glmout)
